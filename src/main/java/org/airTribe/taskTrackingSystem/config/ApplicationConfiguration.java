@@ -32,6 +32,7 @@ public class ApplicationConfiguration  {
         .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/auth/**",
+                                        "/user/**",
                                         "/h2-console/**",
                                         "/error").permitAll()
                                 .anyRequest().authenticated())

@@ -1,13 +1,12 @@
 package org.airTribe.taskTrackingSystem.service;
 
-import org.airTribe.taskTrackingSystem.dto.LoginDto;
-import org.airTribe.taskTrackingSystem.dto.RegisterationDto;
-import org.airTribe.taskTrackingSystem.entity.User;
-import org.airTribe.taskTrackingSystem.entity.VerificationToken;
-import org.airTribe.taskTrackingSystem.repository.UserRepository;
-import org.airTribe.taskTrackingSystem.repository.VerificationTokenRepository;
+import org.airTribe.taskTrackingSystem.dto.*;
+import org.airTribe.taskTrackingSystem.entity.*;
+import org.airTribe.taskTrackingSystem.exception.*;
+import org.airTribe.taskTrackingSystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +25,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     public User registerUser(RegisterationDto registerationDto) {
+
+        Optional<User> exestingUser = _userRepository.findByEmail(registerationDto.getEmail());
+        if(exestingUser.isEmpty()) throw  new DuplicateUsernameException("User with this email already exits");
         User user = User.builder()
                 .password(passwordEncoder.encode(registerationDto.getPassword()))
                 .email(registerationDto.getEmail())
@@ -41,11 +41,23 @@ public class UserService {
     }
 
     public User autheticateUser(LoginDto loginDto) {
-        User user = _userRepository.findByEmail(loginDto.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = _userRepository.findByEmail(loginDto.getEmail()).orElseThrow(() -> new InvalidCredentialsException("User not found"));
         if (user != null && passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
             return user;
         }
-        throw new RuntimeException("Username or Password is incorrect!!!!");
+        throw new InvalidCredentialsException("Username or Password is incorrect!!!!");
+    }
+
+    public String getAutheticateUser(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            return authentication.getPrincipal().toString(); // Assuming username is the email
+        }
+
+        return null;
+
     }
 
     public void createVerificationToken(User user, String token) {
@@ -85,13 +97,21 @@ public class UserService {
 
     public User getUserById(long id){
         Optional<User> user = _userRepository.findById(id);
-        if(user.isEmpty()) throw new RuntimeException("User not Found");
+        if(user.isEmpty()) throw new InvalidRequestException("User not Found");
         return user.get();
     }
 
-    public User getIdByEmail(String email)
+    public User getIdByEmail(String email)  {
+        return _userRepository.findByEmail(email).orElseThrow(() -> new InvalidRequestException("User not found"));
+    }
+
+    public void saveUser(User user){
+        _userRepository.save(user);
+    }
+
+    public void deleteUser(long id)
     {
-        return _userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        _userRepository.deleteById(id);
     }
 }
 

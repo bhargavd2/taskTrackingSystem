@@ -1,5 +1,6 @@
 package org.airTribe.taskTrackingSystem.config;
 
+import org.airTribe.taskTrackingSystem.exception.InvalidCredentialsException;
 import org.airTribe.taskTrackingSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ public class WebSecurityConfig  {
     @Bean
     UserDetailsService userDetailsService() {
         return username -> (UserDetails) _userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new InvalidCredentialsException("User not found"));
     }
 
     @Bean

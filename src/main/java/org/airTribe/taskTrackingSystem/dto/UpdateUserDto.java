@@ -1,6 +1,6 @@
 package org.airTribe.taskTrackingSystem.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -9,13 +9,10 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class RegisterationDto {
-    @NotEmpty
+public class UpdateUserDto {
+
+    @NotNull
     private String firstName;
-    @NotEmpty
+    @NotNull
     private String lastName;
-    @NotEmpty
-    private String email;
-    @NotEmpty
-    private String password;
 }

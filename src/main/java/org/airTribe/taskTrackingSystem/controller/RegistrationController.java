@@ -1,6 +1,7 @@
 package org.airTribe.taskTrackingSystem.controller;
 
 
+import jakarta.validation.Valid;
 import org.airTribe.taskTrackingSystem.dto.*;
 import org.airTribe.taskTrackingSystem.service.*;
 import org.airTribe.taskTrackingSystem.entity.*;
@@ -27,7 +28,7 @@ public class RegistrationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody RegisterationDto registerationDto, HttpServletRequest request) {
+    public ResponseEntity<Object> register(@RequestBody @Valid RegisterationDto registerationDto, HttpServletRequest request) {
         User userEntity =  _userService.registerUser(registerationDto);
         String token = UUID.randomUUID().toString();
         String verificationUrl = getApplicationUrl(request) + "auth/verifyRegistration?token=" + token;
@@ -45,10 +46,9 @@ public class RegistrationController {
     public ResponseEntity<Object>  verifyRegistration(@RequestParam String token) throws TokenExpiredException {
         boolean isValid = _userService.validateTokenAndEnableUser(token);
         Map<String, String> response = new HashMap<>();
-        if (!isValid)
-            response.put("message",  "Invalid token");
-        else
-        response.put("message",  "User enabled successfully");
+
+        if (!isValid) response.put("message",  "Invalid token");
+        else response.put("message",  "User enabled successfully");
 
         return ResponseEntity.ok(response);
     }
@@ -59,7 +59,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid LoginDto loginUserDto) {
         User authenticatedUser = _userService.autheticateUser(loginUserDto);
 
         String jwtToken = _jwtService.generateToken(authenticatedUser,"login");
