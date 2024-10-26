@@ -1,6 +1,7 @@
 package org.airTribe.taskTrackingSystem.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -11,8 +12,8 @@ import lombok.*;
 @Builder
 public class TaskSearchRequestDto {
 
-    @NotEmpty
+    @NotNull
     private String searchfilter; // Could be 'status', 'title', 'description'
-    @NotEmpty
+    @NotNull
     private String value; // The value to search against
 }

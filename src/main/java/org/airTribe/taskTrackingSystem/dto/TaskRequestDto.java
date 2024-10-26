@@ -1,6 +1,7 @@
 package org.airTribe.taskTrackingSystem.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.airTribe.taskTrackingSystem.annotate.FutureDate;
 import org.airTribe.taskTrackingSystem.annotate.ValidPriority;
@@ -20,13 +21,13 @@ public class TaskRequestDto {
     private String title;
     @NotEmpty(message = "must have description")
     private String description;
-    @NotEmpty(message = "must have dueDate")
+
     @FutureDate
     private LocalDate dueDate;
     @ValidPriority
     private String priority;
     private Long assignedToUserId;
-    @NotEmpty(message = "must have projectId")
+    @NotNull(message = "must have projectId")
     private long projectId;
 
 }

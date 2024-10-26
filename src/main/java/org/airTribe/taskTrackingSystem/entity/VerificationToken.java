@@ -1,5 +1,7 @@
 package org.airTribe.taskTrackingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -23,8 +25,14 @@ public class VerificationToken {
     private Date expirationTime;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(nullable = false, name = "userId")
     private User user;
+
+    @JsonProperty("userId")
+    public Long getCreatedById() {
+        return user != null ? user.getUserId() : null;
+    }
 
     public VerificationToken(String token, User user) {
         this.token = token;
