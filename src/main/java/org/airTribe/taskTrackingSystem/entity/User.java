@@ -1,6 +1,7 @@
 package org.airTribe.taskTrackingSystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,11 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String firstName;
+    @JsonIgnore
     private String lastName;
     private String email;
 
     @Column(length = 60)
+    @JsonIgnore
     private String password;
+    @JsonIgnore
     private boolean isEnabled;
 
     @Override

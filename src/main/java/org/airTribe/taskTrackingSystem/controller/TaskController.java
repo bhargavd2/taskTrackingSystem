@@ -88,7 +88,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{taskId}")
     public ResponseEntity<Object> getTaskById(@PathVariable long taskId)
     {
 
@@ -126,7 +126,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/project/{id}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<Object> getTaskByProjectId(@PathVariable long projectId)
     {
 
@@ -195,7 +195,7 @@ public class TaskController {
     }
 
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{taskId}")
     public ResponseEntity<Object> createTask(@PathVariable long taskId,@RequestBody @Valid TaskRequestDto taskRequestDto)
     {
 
@@ -251,7 +251,7 @@ public class TaskController {
         }
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/{taskId}/status")
     public ResponseEntity<Object> updateStauts(@PathVariable long taskId,@RequestParam @ValidStatus String status)
     {
 
@@ -297,7 +297,7 @@ public class TaskController {
         }
     }
 
-    @PatchMapping("/{id}/assign/{userId}")
+    @PatchMapping("/{taskId}/assign/{userId}")
     public ResponseEntity<Object> updateStauts(@PathVariable long taskId,@PathVariable long useId)
     {
 
@@ -385,7 +385,7 @@ public class TaskController {
         return ResponseEntity.ok("");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{taskId}")
     public ResponseEntity<Object> deleteTask(@PathVariable long taskId)
     {
         Map<String, Object> response = new HashMap<>();

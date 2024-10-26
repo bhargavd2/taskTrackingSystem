@@ -1,5 +1,6 @@
 package org.airTribe.taskTrackingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,13 +23,15 @@ public class Project {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "userId")
+    @JsonIgnore
     private User createdBy;
-
+    @JsonIgnore
     private LocalDate CreatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "updated_by", referencedColumnName = "userId")
     private User updatedBy;
-
+    @JsonIgnore
     private LocalDate UpdateDate;
 }

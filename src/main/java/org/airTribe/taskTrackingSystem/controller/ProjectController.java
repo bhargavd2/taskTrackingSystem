@@ -30,7 +30,7 @@ public class ProjectController {
     @Autowired
     private UserService _userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{projectId}")
     public ResponseEntity<Object> getProjectById(@PathVariable long projectId)
     {
         Map<String, Object> response = new HashMap<>();
@@ -63,7 +63,7 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/users")
+    @GetMapping("/{projectId}/users")
     public ResponseEntity<Object> getUsersByProject(@PathVariable long projectId)
     {
         Map<String, Object> response = new HashMap<>();
@@ -157,7 +157,7 @@ public class ProjectController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{projectId}")
     public ResponseEntity<Object> updateProject(@RequestBody @Valid ProjectRequestDto projectRequestDto,
                                                 @PathVariable long projectId)
     {
@@ -195,7 +195,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/{id}/invite/{userId}")
+    @PostMapping("/{projectId}/invite/{userId}")
     public  ResponseEntity<Object> inviteToProject(@PathVariable long projectId, @PathVariable Long userId)
     {
         Map<String, Object> response = new HashMap<>();
@@ -239,7 +239,7 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{projectId}")
     public ResponseEntity<Object> DeleteProject(@PathVariable long projectId)
     {
         Map<String, Object> response = new HashMap<>();
