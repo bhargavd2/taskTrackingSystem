@@ -9,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginDto {
-    @NotEmpty
+    @NotEmpty(message = "must have email")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "must have password")
     private String password;
 }
 

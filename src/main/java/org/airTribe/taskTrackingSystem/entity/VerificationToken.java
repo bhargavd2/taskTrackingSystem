@@ -1,8 +1,12 @@
 package org.airTribe.taskTrackingSystem.entity;
 
-import lombok.*;
-import java.util.Date;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Data

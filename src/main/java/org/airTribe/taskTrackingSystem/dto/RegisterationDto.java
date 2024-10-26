@@ -10,12 +10,12 @@ import lombok.*;
 @Setter
 @Builder
 public class RegisterationDto {
-    @NotEmpty
+    @NotEmpty(message = "must have firstName")
     private String firstName;
-    @NotEmpty
+    @NotEmpty(message = "must have lastName")
     private String lastName;
-    @NotEmpty
+    @NotEmpty(message = "must have email")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "must have password")
     private String password;
 }

@@ -1,9 +1,15 @@
 package org.airTribe.taskTrackingSystem.service;
 
-import org.airTribe.taskTrackingSystem.dto.*;
-import org.airTribe.taskTrackingSystem.entity.*;
-import org.airTribe.taskTrackingSystem.exception.*;
-import org.airTribe.taskTrackingSystem.repository.*;
+import org.airTribe.taskTrackingSystem.dto.LoginDto;
+import org.airTribe.taskTrackingSystem.dto.RegisterationDto;
+import org.airTribe.taskTrackingSystem.entity.User;
+import org.airTribe.taskTrackingSystem.entity.VerificationToken;
+import org.airTribe.taskTrackingSystem.exception.DuplicateUsernameException;
+import org.airTribe.taskTrackingSystem.exception.InvalidCredentialsException;
+import org.airTribe.taskTrackingSystem.exception.InvalidRequestException;
+import org.airTribe.taskTrackingSystem.exception.UserNotFoundException;
+import org.airTribe.taskTrackingSystem.repository.UserRepository;
+import org.airTribe.taskTrackingSystem.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -97,12 +103,12 @@ public class UserService {
 
     public User getUserById(long id){
         Optional<User> user = _userRepository.findById(id);
-        if(user.isEmpty()) throw new InvalidRequestException("User not Found");
+        if(user.isEmpty()) throw new UserNotFoundException("User not Found");
         return user.get();
     }
 
-    public User getIdByEmail(String email)  {
-        return _userRepository.findByEmail(email).orElseThrow(() -> new InvalidRequestException("User not found"));
+    public User getUserByEmail(String email)  {
+        return _userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public void saveUser(User user){

@@ -11,8 +11,8 @@ import lombok.*;
 @Builder
 public class UpdateUserDto {
 
-    @NotNull
+    @NotNull(message = "must have firstName")
     private String firstName;
-    @NotNull
+    @NotNull(message = "must have lastName")
     private String lastName;
 }

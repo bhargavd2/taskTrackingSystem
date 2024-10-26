@@ -1,17 +1,14 @@
 package org.airTribe.taskTrackingSystem.config;
 
-import org.airTribe.taskTrackingSystem.entity.User;
-import org.airTribe.taskTrackingSystem.exception.InvalidJwtAuthenticationException;
-import org.airTribe.taskTrackingSystem.repository.UserRepository;
-import org.airTribe.taskTrackingSystem.service.JwtService;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
-
+import org.airTribe.taskTrackingSystem.entity.User;
+import org.airTribe.taskTrackingSystem.exception.InvalidJwtAuthenticationException;
+import org.airTribe.taskTrackingSystem.repository.UserRepository;
+import org.airTribe.taskTrackingSystem.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +18,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

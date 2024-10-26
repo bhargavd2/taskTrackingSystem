@@ -1,9 +1,8 @@
 package org.airTribe.taskTrackingSystem.entity;
 
 
-import lombok.*;
-import java.util.*;
 import jakarta.persistence.*;
+import lombok.*;
 
 
 @Entity
@@ -25,5 +24,13 @@ public class User {
     @Column(length = 60)
     private String password;
     private boolean isEnabled;
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId;
+    }
 }
 
