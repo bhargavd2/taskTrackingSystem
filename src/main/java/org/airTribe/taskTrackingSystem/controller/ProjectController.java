@@ -36,11 +36,13 @@ public class ProjectController {
         Map<String, Object> response = new HashMap<>();
         try {
             String authEmail = _userService.getAutheticateUser();
-            User user = _userService.getUserByEmail(authEmail);
             Project project = _projectService.getProjectById(projectId);
             List<User> userList = _projectService.getUsersInProject(projectId);
-            if((project.getCreatedBy().getEmail().equals(authEmail))||
-                    (userList.contains(user))){
+
+            boolean isCreator = project.getCreatedBy().getEmail().equals(authEmail);
+            boolean isInUserList = userList.stream().anyMatch(user -> user.getEmail().equals(authEmail));
+
+            if(isCreator || isInUserList){
                 response.put("Status", 200);
                 response.put("Project", project);
             }else {
@@ -69,11 +71,13 @@ public class ProjectController {
         Map<String, Object> response = new HashMap<>();
         try {
             String authEmail = _userService.getAutheticateUser();
-            User user = _userService.getUserByEmail(authEmail);
             Project project = _projectService.getProjectById(projectId);
             List<User> userList = _projectService.getUsersInProject(projectId);
-            if((project.getCreatedBy().getEmail().equals(authEmail))||
-                    (userList.contains(user))) {
+
+            boolean isCreator = project.getCreatedBy().getEmail().equals(authEmail);
+            boolean isInUserList = userList.stream().anyMatch(user -> user.getEmail().equals(authEmail));
+
+            if(isCreator || isInUserList) {
                 response.put("Status", 200);
                 response.put("Users", userList);
                 return ResponseEntity.ok(response);
@@ -142,7 +146,6 @@ public class ProjectController {
         try{
             String authEmail = _userService.getAutheticateUser();
             User user = _userService.getUserByEmail(authEmail);
-
             Project project = _projectService.saveProject(projectRequestDto,user);
 
             response.put("Status",201);
@@ -165,10 +168,9 @@ public class ProjectController {
         try{
             String authEmail = _userService.getAutheticateUser();
             User user = _userService.getUserByEmail(authEmail);
-
             Project project = _projectService.getProjectById(projectId);
 
-            if(project.getCreatedBy().getUserId() == user.getUserId())
+            if(project.getCreatedBy().getEmail().equals(authEmail))
             {
                 Project responseProject = _projectService.updateProject(project,projectRequestDto,user);
                 response.put("Status",200);
@@ -204,9 +206,7 @@ public class ProjectController {
 
             String authEmail = _userService.getAutheticateUser();
             User user = _userService.getUserByEmail(authEmail);
-
             User InvetaionUser = _userService.getUserById(userId);
-
             Project project = _projectService.getProjectById(projectId);
 
             if(project.getCreatedBy().getUserId() == user.getUserId())
@@ -245,8 +245,6 @@ public class ProjectController {
         Map<String, Object> response = new HashMap<>();
         try{
             String authEmail = _userService.getAutheticateUser();
-            User user = _userService.getUserByEmail(authEmail);
-
             Project project = _projectService.getProjectById(projectId);
 
             if(project.getCreatedBy().getEmail().equals(authEmail))

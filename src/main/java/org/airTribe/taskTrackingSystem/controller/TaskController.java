@@ -95,13 +95,14 @@ public class TaskController {
         Map<String, Object> response = new HashMap<>();
         try{
             String authEmail = _userService.getAutheticateUser();
-            User user = _userService.getUserByEmail(authEmail);
             Task task = _taskService.getTaskById(taskId);
             List<User> userList = _projectService.getUsersInProject(task.getProject().getProjectId());
-            if((task.getCreatedBy().getUserId() == user.getUserId())||
-               (task.getAssignedTo().getUserId() == user.getUserId()) ||
-                    (userList.contains(user))
-            ){
+
+            boolean isCreator = task.getCreatedBy().getEmail().equals(authEmail);
+            boolean isAssigned = task.getAssignedTo().getEmail().equals(authEmail);
+            boolean isInUserList = userList.stream().anyMatch(user -> user.getEmail().equals(authEmail));
+
+            if(isCreator || isAssigned || isInUserList){
 
                 response.put("Status",200);
                 response.put("Task",task);
@@ -205,9 +206,11 @@ public class TaskController {
             User user = _userService.getUserByEmail(authEmail);
             Project project =_projectService.getProjectById(taskRequestDto.getProjectId());
             Task task = _taskService.getTaskById(taskId);
-            if((task.getCreatedBy().getUserId() == user.getUserId())||
-                    (task.getAssignedTo().getUserId() == user.getUserId())
-            ) {
+
+            boolean isCreator = task.getCreatedBy().getEmail().equals(authEmail);
+            boolean isAssigned = task.getAssignedTo().getEmail().equals(authEmail);
+
+            if(isCreator || isAssigned) {
                 task.setTitle(taskRequestDto.getTitle());
                 task.setDescription(taskRequestDto.getDescription());
                 task.setDueDate(taskRequestDto.getDueDate());
@@ -260,9 +263,11 @@ public class TaskController {
             String authEmail = _userService.getAutheticateUser();
             User user = _userService.getUserByEmail(authEmail);
             Task task = _taskService.getTaskById(taskId);
-            if((task.getCreatedBy().getUserId() == user.getUserId())||
-                    (task.getAssignedTo().getUserId() == user.getUserId())
-            ){
+
+            boolean isCreator = task.getCreatedBy().getEmail().equals(authEmail);
+            boolean isAssigned = task.getAssignedTo().getEmail().equals(authEmail);
+
+            if(isCreator || isAssigned) {
                 if(status.equals(Status.IN_PROGRESS.toString())) task.setStatus(Status.IN_PROGRESS);
                 else if(status.equals(Status.COMPLETED.toString())) task.setStatus(Status.COMPLETED);
 
@@ -306,9 +311,10 @@ public class TaskController {
             String authEmail = _userService.getAutheticateUser();
             User user = _userService.getUserByEmail(authEmail);
             Task task = _taskService.getTaskById(taskId);
-            if((task.getCreatedBy().getUserId() == user.getUserId())||
-                    (task.getAssignedTo().getUserId() == user.getUserId())
-            ){
+            boolean isCreator = task.getCreatedBy().getEmail().equals(authEmail);
+            boolean isAssigned = task.getAssignedTo().getEmail().equals(authEmail);
+
+            if(isCreator || isAssigned) {
                 task.setAssignedTo(_userService.getUserById(useId));
                 task.setUpdatedBy(user);
                 task.setUpdateDate(LocalDate.now());
@@ -391,9 +397,10 @@ public class TaskController {
         Map<String, Object> response = new HashMap<>();
         try {
             String authEmail = _userService.getAutheticateUser();
-            User user = _userService.getUserByEmail(authEmail);
             Task task = _taskService.getTaskById(taskId);
-            if (task.getCreatedBy().getUserId() == user.getUserId()) {
+            boolean isCreator = task.getCreatedBy().getEmail().equals(authEmail);
+
+            if(isCreator) {
                 _taskService.deleteTaskById(taskId);
                 response.put("Status", 200);
                 response.put("message", "task delete Successfully");
